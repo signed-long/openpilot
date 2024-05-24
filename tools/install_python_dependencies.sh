@@ -34,6 +34,7 @@ fi
 
 echo "pip packages install..."
 # poetry install --no-cache --no-root
+ls -la
 uv pip sync requirements.txt
 
 [ -n "$POETRY_VIRTUALENVS_CREATE" ] && RUN="" || RUN="poetry run"
