@@ -63,11 +63,13 @@ RUN usermod -aG sudo $USER
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER $USER
 
+ARG HERE=unknown
 ENV POETRY_VIRTUALENVS_CREATE=false
+ENV UV_HTTP_TIMEOUT=60
 ENV VIRTUAL_ENV_ROOT="/home/$USER/venv"
 ENV PATH="$VIRTUAL_ENV_ROOT/bin:$PATH"
 
-COPY --chown=$USER requirements.txt /tmp/
+COPY --chown=$USER requirements.linux.x86.txt /tmp/
 COPY --chown=$USER tools/install_python_dependencies.sh /tmp/tools/
 
 RUN cd /tmp && \
