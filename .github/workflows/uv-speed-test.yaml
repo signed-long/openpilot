@@ -1,0 +1,38 @@
+name: uv-speed-test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+concurrency:
+  group: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && github.run_id || github.head_ref || github.ref }}-${{ github.workflow }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+env:
+  BASE_IMAGE: openpilot-base
+
+  BUILD: selfdrive/test/docker_build.sh base
+
+jobs:
+  uv:
+    name: uv
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: uv-speed-test
+        submodules: true
+    - uses: ./.github/workflows/setup-with-retry
+  poetry:
+    name: poetry
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: master
+        submodules: true
+    - uses: ./.github/workflows/setup-with-retry
