@@ -60,6 +60,8 @@ runs:
         find . -type f -not -executable -not -perm 644 -exec chmod 644 {} \;
     - name: Expose GitHub Runtime
       uses: crazy-max/ghaction-github-runtime@v3
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
     # build our docker image
     - shell: bash
       run: eval ${{ env.BUILD }}
