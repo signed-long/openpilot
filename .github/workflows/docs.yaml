@@ -28,13 +28,11 @@ jobs:
         submodules: true
     - uses: ./.github/workflows/setup-with-retry
     - name: Build openpilot
-      uses: ./.github/workflows/stargz-docker-run
-      with:
-        command: "scons -j$(nproc)"
+      run: |
+        ${{ env.RUN }} "scons -j$(nproc)"
     - name: Build docs
-      uses: ./.github/workflows/stargz-docker-run
-      with:
-        command: "apt update && apt install -y doxygen && cd docs && make -j$(nproc) html"
+      run: |
+        ${{ env.RUN }} "apt update && apt install -y doxygen && cd docs && make -j$(nproc) html"
 
     - uses: actions/checkout@v4
       if: github.ref == 'refs/heads/master' && github.repository == 'commaai/openpilot'

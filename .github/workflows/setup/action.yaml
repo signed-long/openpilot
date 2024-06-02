@@ -62,6 +62,75 @@ runs:
       uses: crazy-max/ghaction-github-runtime@v3
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
+
+    - id: setup-stargz
+      name: setup stargz lazy pulling
+      shell: bash
+      run: |
+        sudo bash -c 'cat << EOF > /etc/containerd/config.toml
+        #   Copyright 2018-2022 Docker Inc.
+
+        #   Licensed under the Apache License, Version 2.0 (the "License");
+        #   you may not use this file except in compliance with the License.
+        #   You may obtain a copy of the License at
+
+        #       http://www.apache.org/licenses/LICENSE-2.0
+
+        #   Unless required by applicable law or agreed to in writing, software
+        #   distributed under the License is distributed on an "AS IS" BASIS,
+        #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        #   See the License for the specific language governing permissions and
+        #   limitations under the License.
+
+        #root = "/var/lib/containerd"
+        #state = "/run/containerd"
+        #subreaper = true
+        #oom_score = 0
+
+        #[grpc]
+        #  address = "/run/containerd/containerd.sock"
+        #  uid = 0
+        #  gid = 0
+
+        #[debug]
+        #  address = "/run/containerd/debug.sock"
+        #  uid = 0
+        #  gid = 0
+        #  level = "info"
+        version = 2
+
+        [proxy_plugins]
+          [proxy_plugins.stargz]
+            type = "snapshot"
+            address = "/run/containerd-stargz-grpc/containerd-stargz-grpc.sock"
+        EOF'
+        sudo cat /etc/containerd/config.toml
+
+        sudo cat /etc/docker/daemon.json
+        sudo bash -c 'cat << EOF > /etc/docker/daemon.json
+        {
+          "exec-opts": ["native.cgroupdriver=cgroupfs"],
+          "cgroup-parent": "/actions_job",
+          "features": {
+            "containerd-snapshotter": true
+          },
+          "storage-driver": "stargz"
+        }
+        EOF'
+
+        sudo cat /etc/docker/daemon.json
+
+        sudo apt-get install fuse
+        sudo modprobe fuse
+        sudo wget https://github.com/containerd/stargz-snapshotter/releases/download/v0.15.1/stargz-snapshotter-v0.15.1-linux-amd64.tar.gz
+        sudo tar -C /usr/local/bin -xvf stargz-snapshotter-v0.15.1-linux-amd64.tar.gz containerd-stargz-grpc ctr-remote
+        sudo wget -O /etc/systemd/system/stargz-snapshotter.service https://raw.githubusercontent.com/containerd/stargz-snapshotter/v0.15.1/script/config/etc/systemd/system/stargz-snapshotter.service
+        sudo systemctl enable --now stargz-snapshotter
+        sudo systemctl restart containerd
+        sudo systemctl restart docker
+
+        docker buildx create --use --name lazy-builder --buildkitd-flags '--oci-worker-snapshotter=stargz'
+
     # build our docker image
     - shell: bash
       run: eval ${{ env.BUILD }}
