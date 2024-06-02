@@ -29,9 +29,11 @@ jobs:
     - uses: ./.github/workflows/setup-with-retry
     - name: Build openpilot
       run: |
+        docker buildx create --use --name lazy-builder --buildkitd-flags '--oci-worker-snapshotter=stargz'
         ${{ env.RUN }} "scons -j$(nproc)"
     - name: Build docs
       run: |
+        docker buildx create --use --name lazy-builder --buildkitd-flags '--oci-worker-snapshotter=stargz'
         ${{ env.RUN }} "apt update && apt install -y doxygen && cd docs && make -j$(nproc) html"
 
     - uses: actions/checkout@v4
