@@ -128,7 +128,7 @@ runs:
         sudo systemctl restart containerd
         sudo systemctl restart docker
 
-        # docker buildx create --use --name lazy-builder --buildkitd-flags '--oci-worker-snapshotter=stargz'
+        docker buildx create --use --name lazy-builder --buildkitd-flags '--oci-worker-snapshotter=stargz'
 
     # build our docker image
     - shell: bash

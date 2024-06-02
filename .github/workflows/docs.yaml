@@ -33,8 +33,10 @@ jobs:
     #     ${{ env.RUN }} "scons -j$(nproc)"
     - name: Build docs
       run: |
-        docker buildx create --use --name lazy-builder --buildkitd-flags '--oci-worker-snapshotter=stargz'
+        # docker buildx create --use --name lazy-builder --buildkitd-flags '--oci-worker-snapshotter=stargz'
+        echo "Building openpilot"
         ${{ env.RUN }} "scons -j$(nproc)"
+        echo "Building docs"
         ${{ env.RUN }} "apt update && apt install -y doxygen && cd docs && make -j$(nproc) html"
 
     - uses: actions/checkout@v4
