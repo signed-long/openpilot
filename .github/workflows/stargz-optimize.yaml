@@ -11,7 +11,7 @@ jobs:
         run: |
           git clone https://github.com/containerd/stargz-snapshotter.git
           cd stargz-snapshotter/cmd/
-          go run ctr-remote/main.go image pull ghcr.io/commaai/openpilot-base:latest
+          sudo go run ctr-remote/main.go image pull ghcr.io/commaai/openpilot-base:latest
           sudo go run ctr-remote/main.go image optimize --oci \
            --entrypoint='[ "/bin/bash", "-c" ]' --args='[ "scons -j$(nproc)" ]' \
            ghcr.io/commaai/openpilot-base:latest \
