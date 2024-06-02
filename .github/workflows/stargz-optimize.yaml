@@ -1,0 +1,17 @@
+name: stargz image optimize
+on:
+  workflow_dispatch:
+
+
+jobs:
+  optimize-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Optimize image
+        run: |
+          git clone https://github.com/containerd/stargz-snapshotter.git
+          cd stargz-snapshotter/cmd/
+          go run ctr-remote/main.go image optimize --oci \
+           --entrypoint='[ "/bin/bash", "-c" ]' --args='[ "scons -j$(nproc)" ]' \
+           ghcr.io/commaai/openpilot-base:latest \
+           ghcr.io/signed-long/openpilot-base:scons-optimized
