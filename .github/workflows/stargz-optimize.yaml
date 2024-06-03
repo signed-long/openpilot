@@ -13,6 +13,11 @@ jobs:
           cd stargz-snapshotter/cmd/
           sudo go run ctr-remote/main.go image pull ghcr.io/commaai/openpilot-base:latest
           sudo go run ctr-remote/main.go image optimize --oci \
-           --entrypoint='[ "/bin/bash", "-c" ]' --args='[ "scons -j$(nproc)" ]' \
+           --entrypoint='[ "/bin/bash", "-c" ]' --args='[ "source selfdrive/test/setup_xvfb.sh && \
+                  export MAPBOX_TOKEN='pk.eyJ1Ijoiam5ld2IiLCJhIjoiY2xxNW8zZXprMGw1ZzJwbzZneHd2NHljbSJ9.gV7VPRfbXFetD-1OVF0XZg' && \
+                  $PYTEST --timeout 60 -m 'not slow' && \
+                  ./selfdrive/ui/tests/create_test_translations.sh && \
+                  QT_QPA_PLATFORM=offscreen ./selfdrive/ui/tests/test_translations && \
+                  ./selfdrive/ui/tests/test_translations.py" ]' \
            ghcr.io/commaai/openpilot-base:latest \
            ghcr.io/signed-long/openpilot-base:scons-optimized
