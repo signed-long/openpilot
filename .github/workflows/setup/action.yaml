@@ -65,7 +65,7 @@ runs:
     - name: enable containerd image store
       shell: bash
       run: |
-        sudo bash -c "jq '.features |= . + {"containerd-snapshotter": true}' /etc/docker/daemon.json > /etc/docker/daemon.json"
+        sudo bash -c 'jq ".features |= . + {\"containerd-snapshotter\": true}" /etc/docker/daemon.json > /etc/docker/daemon.json'
         sudo systemctl restart docker
         docker info -f '{{ .DriverStatus }}'
     # build our docker image
