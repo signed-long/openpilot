@@ -40,8 +40,6 @@ jobs:
           echo "generated_matrix=$generated_matrix" >> $GITHUB_OUTPUT
 
   unit_tests:
-    name: unit tests
-    runs-on: ubuntu-latest
     needs: generate-matrix-strategy
     strategy:
       matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
