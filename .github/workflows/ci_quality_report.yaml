@@ -33,9 +33,12 @@ jobs:
     outputs:
       generated_matrix: ${{ steps.gen.outputs.generated_matrix }}
     steps:
-      - run: |
-          echo "generated_matrix=$(python3 -c "import json; print(json.dumps({ 'run_number' : [x for x in range(${{ inputs.n }})] }))")" >> $GITHUB_OUTPUT
-
+      - id: gen
+        run: |
+          generated_matrix=$(python3 -c "import json; print(json.dumps({ 'run_number' : [x for x in range(${{ github.event.inputs.n }})] }))")
+          echo $generated_matrix
+          echo "generated_matrix=$generated_matrix" >> $GITHUB_OUTPUT
+s
   run-matrix:
     needs: generate-matrix-strategy
     runs-on: ubuntu-latest
