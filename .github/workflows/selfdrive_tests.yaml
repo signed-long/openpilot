@@ -12,11 +12,11 @@ on:
         description: 'Whether to enable concurrency.cancel-in-progress'
         type: string
         required: false
-        default: "don't cancel"
+        default: "no"
 
 concurrency:
   group: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && github.run_id || github.head_ref || github.ref }}-${{ github.workflow }}-${{ github.event_name }}
-  cancel-in-progress: ${{ inputs.cancel_in_progress == '' && true}}
+  cancel-in-progress: ${{ inputs.cancel_in_progress == '' && true }}
 
 env:
   PYTHONWARNINGS: error
