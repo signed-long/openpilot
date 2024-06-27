@@ -46,7 +46,7 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/workflows/setup-with-retry
+      - uses: ./.github/workflows/unit-tests
 
     # uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
     # with:
