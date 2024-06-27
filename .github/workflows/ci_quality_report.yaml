@@ -39,10 +39,15 @@ jobs:
           echo $generated_matrix
           echo "generated_matrix=$generated_matrix" >> $GITHUB_OUTPUT
 
-  unit_tests:
+  selfdrive_tests:
+    name: run tests
     needs: generate-matrix-strategy
     strategy:
       matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
-    uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/workflows/setup-with-retry
+
+    # uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
     # with:
     #   run_number: ${{ matrix.run_number }}
