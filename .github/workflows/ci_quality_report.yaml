@@ -40,6 +40,6 @@ jobs:
     needs: generate-matrix-strategy
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJson(needs.setup.outputs.generated_matrix) }}
+      matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
     steps:
       - run: echo ${{matrix.run_number}}
