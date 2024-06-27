@@ -44,13 +44,13 @@ jobs:
     needs: generate-matrix-strategy
     strategy:
       matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
-      - uses: ./.github/workflows/unit-tests
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - uses: actions/checkout@v4
+    #     with:
+    #       submodules: true
+    #   - uses: ./.github/workflows/unit-tests
 
-    # uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
-    # with:
-    #   run_number: ${{ matrix.run_number }}
+    uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
+    with:
+      run_number: ${{ matrix.run_number }}
