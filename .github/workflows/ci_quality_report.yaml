@@ -38,7 +38,7 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
     uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
     with:
-      run_number: ${{ matrix.run_number }}
+      run_number: ${{ matrix.run_number }}_0
 
   selfdrive_tests_1:
     needs: generate-matrix-strategy
@@ -46,7 +46,7 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
     uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
     with:
-      run_number: ${{ matrix.run_number }}
+      run_number: ${{ matrix.run_number }}_1
 
   selfdrive_tests_2:
     needs: generate-matrix-strategy
@@ -54,7 +54,7 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
     uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
     with:
-      run_number: ${{ matrix.run_number }}
+      run_number: ${{ matrix.run_number }}_2
 
   selfdrive_tests_3:
     needs: generate-matrix-strategy
@@ -62,7 +62,7 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
     uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
     with:
-      run_number: ${{ matrix.run_number }}
+      run_number: ${{ matrix.run_number }}_3
 
   tools_tests:
     needs: generate-matrix-strategy
@@ -70,15 +70,7 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
     uses: signed-long/openpilot/.github/workflows/tools_tests.yaml@master
     with:
-      run_number: ${{ matrix.run_number }}
-
-  tools_tests_0:
-    needs: generate-matrix-strategy
-    strategy:
-      matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
-    uses: signed-long/openpilot/.github/workflows/tools_tests.yaml@master
-    with:
-      run_number: ${{ matrix.run_number }}
+      run_number: ${{ matrix.run_number }}_0
 
   tools_tests_1:
     needs: generate-matrix-strategy
@@ -86,7 +78,7 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
     uses: signed-long/openpilot/.github/workflows/tools_tests.yaml@master
     with:
-      run_number: ${{ matrix.run_number }}
+      run_number: ${{ matrix.run_number }}_1
 
   tools_tests_2:
     needs: generate-matrix-strategy
@@ -94,7 +86,7 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
     uses: signed-long/openpilot/.github/workflows/tools_tests.yaml@master
     with:
-      run_number: ${{ matrix.run_number }}
+      run_number: ${{ matrix.run_number }}_2
 
   tools_tests_3:
     needs: generate-matrix-strategy
@@ -102,4 +94,4 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
     uses: signed-long/openpilot/.github/workflows/tools_tests.yaml@master
     with:
-      run_number: ${{ matrix.run_number }}
+      run_number: ${{ matrix.run_number }}_3
