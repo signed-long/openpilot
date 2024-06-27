@@ -9,10 +9,10 @@ on:
   workflow_call:
     inputs:
       cancel_in_progress:
-        description: 'Whether to enable concurrency.cancel-in-progress'
+        description: 'Non-empty string to set cancel-in-progress to false'
         type: string
         required: false
-        default: "no"
+        default: "no_cancel_in_progress"
 
 concurrency:
   group: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && github.run_id || github.head_ref || github.ref }}-${{ github.workflow }}-${{ github.event_name }}
