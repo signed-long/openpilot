@@ -8,15 +8,13 @@ on:
   workflow_dispatch:
   workflow_call:
     inputs:
-      cancel_in_progress:
-        description: 'Non-empty string to set cancel-in-progress to false'
+      run_number:
         type: string
-        required: false
-        default: "no_cancel_in_progress"
+        required: true
 
 concurrency:
-  group: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && github.run_id || github.head_ref || github.ref }}-${{ github.workflow }}-${{ github.event_name }}
-  cancel-in-progress: ${{ inputs.cancel_in_progress == '' && true }}
+  group: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && github.run_id || github.head_ref || github.ref }}-${{ github.workflow }}-${{ github.event_name }}-${{ inputs.run_number }}
+  cancel-in-progress: true
 
 env:
   PYTHONWARNINGS: error
