@@ -46,3 +46,5 @@ jobs:
     strategy:
       matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
     uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
+    with:
+      target: ${{ matrix.run_number }}
