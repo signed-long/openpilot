@@ -14,7 +14,7 @@ on:
         type: number
 
 env:
-  N: ${{ github.event.inputs.n || '5' }}
+  N: ${{ github.event.inputs.n || '2' }}
   # PYTHONWARNINGS: error
   # BASE_IMAGE: openpilot-base
   # AZURE_TOKEN: ${{ secrets.AZURE_COMMADATACI_OPENPILOTCI_TOKEN }}
@@ -45,4 +45,4 @@ jobs:
     needs: generate-matrix-strategy
     strategy:
       matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
-    uses: signed-long/openpilot/.github/workflows/selfdrive_test.yaml@master
+    uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
