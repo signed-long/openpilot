@@ -52,5 +52,5 @@ jobs:
     #   - uses: ./.github/workflows/unit-tests
 
     uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
-    with:
-      run_number: ${{ matrix.run_number }}
+    # with:
+    #   run_number: ${{ matrix.run_number }}
