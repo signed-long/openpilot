@@ -37,8 +37,7 @@ jobs:
         echo "generated_matrix=$(python3 -c "import json; print(json.dumps({ 'run_number' : [x for x in range(${{ inputs.n }})] }))")" >> $GITHUB_OUTPUT
 
   run-matrix:
-
-    needs: generate-matrix-strategy:
+    needs: generate-matrix-strategy
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{ fromJson(needs.setup.outputs.generated_matrix) }}
