@@ -35,7 +35,7 @@ jobs:
     steps:
       - id: gen
         run: |
-          generated_matrix=$(python3 -c "import json; print(json.dumps({ 'run_number' : [x for x in range(${{ github.event.inputs.n }})] }))")
+          generated_matrix=$(python3 -c "import json; print(json.dumps({ 'run_number' : [x for x in range(10)] }))")
           echo $generated_matrix
           echo "generated_matrix=$generated_matrix" >> $GITHUB_OUTPUT
 
