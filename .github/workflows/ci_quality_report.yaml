@@ -95,9 +95,12 @@ jobs:
     needs: generate-matrix-strategy
     strategy:
       matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
-    uses: signed-long/openpilot/.github/workflows/tools_tests.yaml@master
-    with:
-      run_number: ${{ matrix.run_number }}_tools_tests_3
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 1
+    # uses: signed-long/openpilot/.github/workflows/tools_tests.yaml@master
+    # with:
+    #   run_number: ${{ matrix.run_number }}_tools_tests_3
 
   report:
     needs: [tools_tests_3]
