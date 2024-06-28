@@ -124,6 +124,6 @@ jobs:
           echo "### Failed jobs" >> $GITHUB_STEP_SUMMARY
           echo "Failed CI Runs: ${{ steps.parse.outputs.failed_jobs }}/${{ steps.parse.outputs.total_jobs }}" >> $GITHUB_STEP_SUMMARY
           echo "### Failed jobs" >> $GITHUB_STEP_SUMMARY
-          echo "${{ needs }}" | jq 'map(select(.outcome == "failure"))' >> $GITHUB_STEP_SUMMARY
-          echo "${{ needs }}" >> $GITHUB_STEP_SUMMARY
+          echo $JOB_RESULTS | jq 'map(select(.outcome == "failure"))' >> $GITHUB_STEP_SUMMARY
+          echo $JOB_RESULTS >> $GITHUB_STEP_SUMMARY
 
