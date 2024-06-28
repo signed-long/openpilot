@@ -106,9 +106,11 @@ jobs:
     steps:
       - name: Parse job results
         id: parse
+        env:
+          JOB_RESULTS: ${{ toJSON(needs) }}
         run: |
-          failed_jobs=$(echo "${{ toJSON(needs) }}" | jq 'map(select(.outcome == "failure")) | length')
-          total_jobs=$(echo "${{ toJSON(needs) }}" | jq 'length')
+          failed_jobs=$(echo $JOB_RESULTS | jq 'map(select(.outcome == "failure")) | length')
+          total_jobs=$(echo $JOB_RESULTS | jq 'length')
           echo "failed_jobs=$failed_jobs" >> $GITHUB_OUTPUT
           echo "total_jobs=$total_jobs" >> $GITHUB_OUTPUT
       - name: Report results
