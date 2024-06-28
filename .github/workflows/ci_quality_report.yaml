@@ -117,6 +117,8 @@ jobs:
           echo "failed_jobs=$failed_jobs" >> $GITHUB_OUTPUT
           echo "total_jobs=$total_jobs" >> $GITHUB_OUTPUT
       - name: Report results
+        env:
+          JOB_RESULTS: ${{ toJSON(needs) }}
         run: |
           echo "## CI Quality Report" > $GITHUB_STEP_SUMMARY
           echo "### Failed jobs" >> $GITHUB_STEP_SUMMARY
