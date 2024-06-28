@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
     inputs:
       n:
-        description: 'Number of times to run CI jobs'
-        default: 4
+        description: 'Number of times to run CI jobs (max 100)'
+        default: 100
         required: true
         type: number
 
@@ -26,8 +26,11 @@ jobs:
       - id: gen
         run: |
           total_runs=${{ env.N }}
-          matrix_count=4
-          runs_per_matrix=$((total_runs / matrix_count))
+          if [ $total_runs -gt 100 ]; then
+            echo "Max number of runs is 100"
+            exit 1
+          fi
+          runs_per_matrix=$((total_runs / 4))
           generated_matrix=$(python3 -c "import json; print(json.dumps({ 'run_number' : [x for x in range($runs_per_matrix)] }))")
           echo $generated_matrix
           echo "generated_matrix=$generated_matrix" >> $GITHUB_OUTPUT
