@@ -35,61 +35,61 @@ jobs:
           echo $generated_matrix
           echo "generated_matrix=$generated_matrix" >> $GITHUB_OUTPUT
 
-  selfdrive_tests_0:
-    needs: generate-matrix-strategy
-    strategy:
-      matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
-    uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
-    with:
-      run_number: ${{ matrix.run_number }}_selfdrive_tests_0
+  # selfdrive_tests_0:
+  #   needs: generate-matrix-strategy
+  #   strategy:
+  #     matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
+  #   uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
+  #   with:
+  #     run_number: ${{ matrix.run_number }}_selfdrive_tests_0
 
-  selfdrive_tests_1:
-    needs: generate-matrix-strategy
-    strategy:
-      matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
-    uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
-    with:
-      run_number: ${{ matrix.run_number }}_selfdrive_tests_1
+  # selfdrive_tests_1:
+  #   needs: generate-matrix-strategy
+  #   strategy:
+  #     matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
+  #   uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
+  #   with:
+  #     run_number: ${{ matrix.run_number }}_selfdrive_tests_1
 
-  selfdrive_tests_2:
-    needs: generate-matrix-strategy
-    strategy:
-      matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
-    uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
-    with:
-      run_number: ${{ matrix.run_number }}_selfdrive_tests_2
+  # selfdrive_tests_2:
+  #   needs: generate-matrix-strategy
+  #   strategy:
+  #     matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
+  #   uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
+  #   with:
+  #     run_number: ${{ matrix.run_number }}_selfdrive_tests_2
 
-  selfdrive_tests_3:
-    needs: generate-matrix-strategy
-    strategy:
-      matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
-    uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
-    with:
-      run_number: ${{ matrix.run_number }}_selfdrive_tests_3
+  # selfdrive_tests_3:
+  #   needs: generate-matrix-strategy
+  #   strategy:
+  #     matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
+  #   uses: signed-long/openpilot/.github/workflows/selfdrive_tests.yaml@master
+  #   with:
+  #     run_number: ${{ matrix.run_number }}_selfdrive_tests_3
 
-  tools_tests_0:
-    needs: generate-matrix-strategy
-    strategy:
-      matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
-    uses: signed-long/openpilot/.github/workflows/tools_tests.yaml@master
-    with:
-      run_number: ${{ matrix.run_number }}_tools_tests_0
+  # tools_tests_0:
+  #   needs: generate-matrix-strategy
+  #   strategy:
+  #     matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
+  #   uses: signed-long/openpilot/.github/workflows/tools_tests.yaml@master
+  #   with:
+  #     run_number: ${{ matrix.run_number }}_tools_tests_0
 
-  tools_tests_1:
-    needs: generate-matrix-strategy
-    strategy:
-      matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
-    uses: signed-long/openpilot/.github/workflows/tools_tests.yaml@master
-    with:
-      run_number: ${{ matrix.run_number }}_tools_tests_1
+  # tools_tests_1:
+  #   needs: generate-matrix-strategy
+  #   strategy:
+  #     matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
+  #   uses: signed-long/openpilot/.github/workflows/tools_tests.yaml@master
+  #   with:
+  #     run_number: ${{ matrix.run_number }}_tools_tests_1
 
-  tools_tests_2:
-    needs: generate-matrix-strategy
-    strategy:
-      matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
-    uses: signed-long/openpilot/.github/workflows/tools_tests.yaml@master
-    with:
-      run_number: ${{ matrix.run_number }}_tools_tests_2
+  # tools_tests_2:
+  #   needs: generate-matrix-strategy
+  #   strategy:
+  #     matrix: ${{ fromJson(needs.generate-matrix-strategy.outputs.generated_matrix) }}
+  #   uses: signed-long/openpilot/.github/workflows/tools_tests.yaml@master
+  #   with:
+  #     run_number: ${{ matrix.run_number }}_tools_tests_2
 
   tools_tests_3:
     needs: generate-matrix-strategy
@@ -100,15 +100,15 @@ jobs:
       run_number: ${{ matrix.run_number }}_tools_tests_3
 
   report:
-    needs: [selfdrive_tests_0, selfdrive_tests_1, selfdrive_tests_2, selfdrive_tests_3, tools_tests_0, tools_tests_1, tools_tests_2, tools_tests_3]
+    needs: [tools_tests_3]
     runs-on: ubuntu-latest
     if: always()
     steps:
       - name: Parse job results
         id: parse
         run: |
-          failed_jobs=$(echo "${{ needs }}" | jq 'map(select(.outcome == "failure")) | length')
-          total_jobs=$(echo "${{ needs }}" | jq 'length')
+          failed_jobs=$(echo "${{ toJSON(needs) }}" | jq 'map(select(.outcome == "failure")) | length')
+          total_jobs=$(echo "${{ toJSON(needs) }}" | jq 'length')
           echo "failed_jobs=$failed_jobs" >> $GITHUB_OUTPUT
           echo "total_jobs=$total_jobs" >> $GITHUB_OUTPUT
       - name: Report results
