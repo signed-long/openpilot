@@ -350,7 +350,7 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
           mkdir -p openpilot/pr-$PR_NUMBER
-          sudo mv ${{ github.workspace }}/selfdrive/ui/tests/test_ui/report/screenshots openpilot/pr-$PR_NUMBER
+          sudo mv ${{ github.workspace }}/selfdrive/ui/tests/test_ui/report/screenshots/* openpilot/pr-$PR_NUMBER/screenshots
           git add openpilot/pr-$PR_NUMBER
           git commit -m "screenshots for PR #$PR_NUMBER"
           git push
