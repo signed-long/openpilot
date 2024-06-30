@@ -348,6 +348,7 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           git checkout -B pr-$PR_NUMBER
+          git pull
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
           mkdir -p openpilot/pr-$PR_NUMBER
