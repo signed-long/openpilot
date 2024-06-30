@@ -348,6 +348,7 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           git checkout -B pr-$PR_NUMBER
+          git branch --set-upstream-to=origin/pr-$PR_NUMBER pr-$PR_NUMBER
           git pull
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
