@@ -353,7 +353,8 @@ jobs:
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
-          git add selfdrive/ui/tests/test_ui/report/screenshots
+          mv ${{ github.workspace }}/selfdrive/ui/tests/test_ui/report/screenshots openpilot/pr-$PR_NUMBER
+          git add openpilot/pr-$PR_NUMBER
           git commit -m "screenshots for PR #$PR_NUMBER"
           git push
       # - name: Comment Screenshots on PR
