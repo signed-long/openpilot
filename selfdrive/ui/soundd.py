@@ -3,7 +3,6 @@ import numpy as np
 import time
 import wave
 
-
 from cereal import car, messaging
 from openpilot.common.basedir import BASEDIR
 from openpilot.common.filter_simple import FirstOrderFilter
