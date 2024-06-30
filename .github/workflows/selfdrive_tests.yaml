@@ -360,7 +360,7 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            <!-- _(run_id **${{ github.run_id }}_screenshots**)_ -->
+            <!-- _(run_id_screenshots **${{ github.run_id }}**)_ -->
             <table>
               <tr>
                 <td><img src="https://raw.githubusercontent.com/signed-long/ci-artifacts/pr-${{ github.event.pull_request.number }}/openpilot/pr-${{ github.event.pull_request.number }}/homescreen.png"></td>
@@ -375,6 +375,6 @@ jobs:
                 <td><img src="https://raw.githubusercontent.com/signed-long/ci-artifacts/pr-${{ github.event.pull_request.number }}/openpilot/pr-${{ github.event.pull_request.number }}/settings_device.png"></td>
               </tr>
             </table>
-          comment_tag: run_id
+          comment_tag: run_id_screenshots
           pr_number: ${{ github.event.pull_request.number }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
