@@ -308,6 +308,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 2
           submodules: true
       - uses: ./.github/workflows/setup-with-retry
       - name: Build openpilot
@@ -322,3 +323,51 @@ jobs:
         with:
           name: report
           path: selfdrive/ui/tests/test_ui/report
+      - name: Check if ui changed
+        id: ui_changed
+        run: |
+          git diff --name-only -r HEAD^1 HEAD | grep -q selfdrive/ui && echo "ui_changed=true" >> $GITHUB_OUTPUT
+      - name: Checkout ci-artifacts
+        if: ${{ github.event_name == 'pull_request' && steps.ui_changed.outputs.ui_changed == 'true' }}
+        uses: actions/checkout@v4
+        with:
+          repository: signed-long/ci-artifacts
+          ssh-key: ${{ secrets.CI_ARTIFACTS_DEPLOY_KEY }}
+          path: ${{ github.workspace }}/ci-artifacts
+          ref: master
+      - name: Push Screenshots
+        if: ${{ github.event_name == 'pull_request' && steps.ui_changed.outputs.ui_changed == 'true' }}
+        working-directory: ${{ github.workspace }}/ci-artifacts
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+          git add selfdrive/ui/tests/test_ui/report/screenshots
+          git commit -m "screenshots for PR #$PR_NUMBER"
+          git push
+      # - name: Comment Screenshots on PR
+      #   if: ${{ github.event_name == 'pull_request' && steps.ui_changed.outputs.ui_changed == 'true' }}
+      #   uses: thollander/actions-comment-pull-request@v2
+      #   with:
+      #     message: |
+      #       <!-- _(run_id **${{ github.run_id }}**)_ -->
+      #       <table>
+      #         <tr>
+      #           <td><img src="https://raw.githubusercontent.com/commaai/ci-artifacts/master/openpilot/pr-${{ steps.pr.outputs.result }}/Login-mobile.playwright.png"></td>
+      #           <td><img src="https://raw.githubusercontent.com/commaai/ci-artifacts/master/openpilot/pr-${{ steps.pr.outputs.result }}/RouteActivity-mobile.playwright.png"></td>
+      #           <td><img src="https://raw.githubusercontent.com/commaai/ci-artifacts/master/openpilot/pr-${{ steps.pr.outputs.result }}/RouteList-mobile.playwright.png"></td>
+      #         </tr>
+      #       </table>
+
+      #       ### Desktop
+      #       <table>
+      #         <tr>
+      #           <img src="https://raw.githubusercontent.com/commaai/ci-artifacts/master/openpilot/pr-${{ steps.pr.outputs.result }}/Login-desktop.playwright.png">
+      #           <img src="https://raw.githubusercontent.com/commaai/ci-artifacts/master/openpilot/pr-${{ steps.pr.outputs.result }}/RouteActivity-desktop.playwright.png">
+      #           <img src="https://raw.githubusercontent.com/commaai/ci-artifacts/master/openpilot/pr-${{ steps.pr.outputs.result }}/RouteList-desktop.playwright.png">
+      #         </tr>
+      #       </table>
+      #     comment_tag: run_id
+      #     pr_number: ${{ steps.pr.outputs.result }}
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
