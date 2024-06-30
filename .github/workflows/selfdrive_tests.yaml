@@ -324,9 +324,11 @@ jobs:
           name: report
           path: selfdrive/ui/tests/test_ui/report
       - name: Check if ui changed
+        if: ${{ github.event_name == 'pull_request' }}
         id: ui_changed
         run: |
-          git diff --name-only -r HEAD^1 HEAD | grep -q selfdrive/ui && echo "ui_changed=true" >> $GITHUB_OUTPUT
+          diff=$(git diff --name-only -r HEAD^1 HEAD)
+          echo $diff | grep -q selfdrive/ui && echo "ui_changed=true" || echo "ui_changed=false" >> $GITHUB_OUTPUT
       - name: Checkout ci-artifacts
         if: ${{ github.event_name == 'pull_request' && steps.ui_changed.outputs.ui_changed == 'true' }}
         uses: actions/checkout@v4
