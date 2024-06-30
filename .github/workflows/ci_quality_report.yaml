@@ -133,9 +133,11 @@ jobs:
             return JSON.stringify(report);
 
       - name: Add job results to summary
+        env:
+          JOB_RESULTS: ${{ steps.get-job-results.outputs.result }}
         run: |
           generate_html_table() {
-            json="$(cat notes.json)"
+            json=$JOB_RESULTS
 
             jq -r '
               "<table style=\"width:100%\">",
