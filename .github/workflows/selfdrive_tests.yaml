@@ -333,10 +333,6 @@ jobs:
           else
             echo "ui_changed=false" >> $GITHUB_OUTPUT
           fi
-      - name: debug
-        if: ${{ github.event_name == 'pull_request' }}
-        run:
-          echo ${{ steps.ui_changed.outputs.ui_changed }}
       - name: Checkout ci-artifacts
         if: ${{ github.event_name == 'pull_request' && steps.ui_changed.outputs.ui_changed }}
         uses: actions/checkout@v4
@@ -353,7 +349,7 @@ jobs:
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
-          mv ${{ github.workspace }}/selfdrive/ui/tests/test_ui/report/screenshots openpilot/pr-$PR_NUMBER
+          cp ${{ github.workspace }}/selfdrive/ui/tests/test_ui/report/screenshots openpilot/pr-$PR_NUMBER
           git add openpilot/pr-$PR_NUMBER
           git commit -m "screenshots for PR #$PR_NUMBER"
           git push
