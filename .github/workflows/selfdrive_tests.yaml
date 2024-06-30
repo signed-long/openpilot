@@ -329,8 +329,12 @@ jobs:
         run: |
           diff=$(git diff --name-only -r HEAD^1 HEAD)
           echo $diff | grep -q selfdrive/ui && echo "ui_changed=true" || echo "ui_changed=false" >> $GITHUB_OUTPUT
+      - name: debug
+        if: ${{ github.event_name == 'pull_request' }}
+        run:
+          echo ${{ steps.ui_changed.outputs.ui_changed }}
       - name: Checkout ci-artifacts
-        if: ${{ github.event_name == 'pull_request' && steps.ui_changed.outputs.ui_changed == 'true' }}
+        if: ${{ github.event_name == 'pull_request' && steps.ui_changed.outputs.ui_changed }}
         uses: actions/checkout@v4
         with:
           repository: signed-long/ci-artifacts
@@ -338,7 +342,7 @@ jobs:
           path: ${{ github.workspace }}/ci-artifacts
           ref: master
       - name: Push Screenshots
-        if: ${{ github.event_name == 'pull_request' && steps.ui_changed.outputs.ui_changed == 'true' }}
+        if: ${{ github.event_name == 'pull_request' && steps.ui_changed.outputs.ui_changed }}
         working-directory: ${{ github.workspace }}/ci-artifacts
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
@@ -349,7 +353,7 @@ jobs:
           git commit -m "screenshots for PR #$PR_NUMBER"
           git push
       # - name: Comment Screenshots on PR
-      #   if: ${{ github.event_name == 'pull_request' && steps.ui_changed.outputs.ui_changed == 'true' }}
+      #   if: ${{ github.event_name == 'pull_request' && steps.ui_changed.outputs.ui_changed }}
       #   uses: thollander/actions-comment-pull-request@v2
       #   with:
       #     message: |
