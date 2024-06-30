@@ -138,6 +138,7 @@ jobs:
         run: |
           echo $JOB_RESULTS
           echo $JOB_RESULTS > job_results.json
+          cat job_results.json
           generate_html_table() {
             echo "<table>"
             echo "<thead>"
