@@ -328,7 +328,11 @@ jobs:
         id: ui_changed
         run: |
           diff=$(git diff --name-only -r HEAD^1 HEAD)
-          echo $diff | grep -q selfdrive/ui && echo "ui_changed=true" || echo "ui_changed=false" >> $GITHUB_OUTPUT
+          if echo $diff | grep -q selfdrive/ui; then
+            echo "ui_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "ui_changed=false" >> $GITHUB_OUTPUT
+          fi
       - name: debug
         if: ${{ github.event_name == 'pull_request' }}
         run:
