@@ -1,69 +1,14 @@
-name: 'openpilot env setup'
+name: 'docker run using stargz'
 
 inputs:
-  docker_hub_pat:
-    description: 'Auth token for Docker Hub, required for BuildJet jobs'
+  command:
+    description: 'Command to run in the container'
     required: true
-    default: ''
-  is_retried:
-    description: 'A mock param that asserts that we use the setup-with-retry instead of this action directly'
-    required: false
-    default: 'false'
 
 runs:
   using: "composite"
   steps:
-    # assert that this action is retried using the setup-with-retry
-    - shell: bash
-      if: ${{ inputs.is_retried == 'false' }}
-      run: |
-        echo "You should not run this action directly. Use setup-with-retry instead"
-        exit 1
-
-    # do this after checkout to ensure our custom LFS config is used to pull from GitLab
-    - shell: bash
-      run: git lfs pull
-
-    # on BuildJet runners, must be logged into DockerHub to avoid rate limiting
-    # https://buildjet.com/for-github-actions/docs/guides/docker
-    - shell: bash
-      if: ${{ contains(runner.name, 'buildjet') && inputs.docker_hub_pat == '' }}
-      run: |
-        echo "Need to set the Docker Hub PAT secret as an input to this action"
-        exit 1
-    - name: Login to Docker Hub
-      if: contains(runner.name, 'buildjet')
-      shell: bash
-      run: |
-        docker login -u adeebshihadeh -p ${{ inputs.docker_hub_pat }}
-
-    # build cache
-    - id: date
-      shell: bash
-      run: echo "CACHE_COMMIT_DATE=$(git log -1 --pretty='format:%cd' --date=format:'%Y-%m-%d-%H:%M')" >> $GITHUB_ENV
-    - shell: bash
-      run: echo "$CACHE_COMMIT_DATE"
-    - id: scons-cache
-      uses: ./.github/workflows/auto-cache
-      with:
-        path: .ci_cache/scons_cache
-        key: scons-${{ runner.arch }}-${{ env.CACHE_COMMIT_DATE }}-${{ github.sha }}
-        restore-keys: |
-          scons-${{ runner.arch }}-${{ env.CACHE_COMMIT_DATE }}
-          scons-${{ runner.arch }}
-    # as suggested here: https://github.com/moby/moby/issues/32816#issuecomment-910030001
-    - id: normalize-file-permissions
-      shell: bash
-      name: Normalize file permissions to ensure a consistent docker build cache
-      run: |
-        find . -type f -executable -not -perm 755 -exec chmod 755 {} \;
-        find . -type f -not -executable -not -perm 644 -exec chmod 644 {} \;
-    # - name: Expose GitHub Runtime
-    #   uses: crazy-max/ghaction-github-runtime@v3
-    # - name: Set up Docker Buildx
-    #   uses: docker/setup-buildx-action@v3
-
-    - id: setup-stargz
+    - id: setup
       name: setup stargz lazy pulling
       shell: bash
       run: |
@@ -120,6 +65,7 @@ runs:
 
         sudo cat /etc/docker/daemon.json
 
+        sudo apt-get install fuse
         sudo modprobe fuse
         sudo wget https://github.com/containerd/stargz-snapshotter/releases/download/v0.15.1/stargz-snapshotter-v0.15.1-linux-amd64.tar.gz
         sudo tar -C /usr/local/bin -xvf stargz-snapshotter-v0.15.1-linux-amd64.tar.gz containerd-stargz-grpc ctr-remote
@@ -130,6 +76,6 @@ runs:
 
         docker buildx create --use --name lazy-builder --buildkitd-flags '--oci-worker-snapshotter=stargz'
 
-    # build our docker image
-    - shell: bash
-      run: eval ${{ env.BUILD }}
+    - name: Docker run
+      shell: bash
+      run: eval ${{ env.RUN }} "${{ inputs.command }}"
