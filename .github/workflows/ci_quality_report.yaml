@@ -136,6 +136,7 @@ jobs:
         env:
           JOB_RESULTS:  ${{ steps.get-job-results.outputs.result }}
         run: |
+          json=$JOB_RESULTS
           generate_html_table() {
             echo "<table>"
             echo "<thead>"
@@ -170,7 +171,7 @@ jobs:
               "    </details>",
               "  </td>",
               "</tr>"
-            ' <<< echo $JOB_RESULTS
+            ' <<< $json
             echo  "</tbody>"
             echo  "</table>"
           }
