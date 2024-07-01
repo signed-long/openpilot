@@ -116,7 +116,6 @@ CASES = {
 
 TEST_DIR = pathlib.Path(__file__).parent
 
-
 TEST_OUTPUT_DIR = TEST_DIR / "report"
 SCREENSHOTS_DIR = TEST_OUTPUT_DIR / "screenshots"
 
