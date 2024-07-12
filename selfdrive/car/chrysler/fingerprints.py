@@ -4,35 +4,6 @@ from openpilot.selfdrive.car.chrysler.values import CAR
 Ecu = car.CarParams.Ecu
 
 FW_VERSIONS = {
-  CAR.CHRYSLER_PACIFICA_2017_HYBRID: {
-    (Ecu.combinationMeter, 0x742, None): [
-      b'68239262AH',
-      b'68239262AI',
-      b'68239262AJ',
-      b'68239263AH',
-      b'68239263AJ',
-    ],
-    (Ecu.srs, 0x744, None): [
-      b'68238840AH',
-    ],
-    (Ecu.fwdRadar, 0x753, None): [
-      b'68226356AI',
-    ],
-    (Ecu.eps, 0x75a, None): [
-      b'68288309AC',
-      b'68288309AD',
-    ],
-    (Ecu.engine, 0x7e0, None): [
-      b'68277480AV ',
-      b'68277480AX ',
-      b'68277480AZ ',
-    ],
-    (Ecu.hybrid, 0x7e2, None): [
-      b'05190175BF',
-      b'05190175BH',
-      b'05190226AK',
-    ],
-  },
   CAR.CHRYSLER_PACIFICA_2018: {
     (Ecu.combinationMeter, 0x742, None): [
       b'68227902AF',
@@ -145,6 +116,7 @@ FW_VERSIONS = {
       b'68413871AE ',
       b'68413871AH ',
       b'68413871AI ',
+      b'68413873AH ',
       b'68413873AI ',
       b'68443120AE ',
       b'68443123AC ',
@@ -165,6 +137,7 @@ FW_VERSIONS = {
       b'68414271AC',
       b'68414271AD',
       b'68414275AC',
+      b'68414275AD',
       b'68443154AB',
       b'68443155AC',
       b'68443158AB',
@@ -179,26 +152,39 @@ FW_VERSIONS = {
   },
   CAR.CHRYSLER_PACIFICA_2018_HYBRID: {
     (Ecu.combinationMeter, 0x742, None): [
+      b'68239262AH',
+      b'68239262AI',
+      b'68239262AJ',
+      b'68239263AH',
+      b'68239263AJ',
       b'68358439AE',
       b'68358439AG',
     ],
     (Ecu.srs, 0x744, None): [
+      b'68238840AH',
       b'68358990AC',
       b'68405939AA',
     ],
     (Ecu.fwdRadar, 0x753, None): [
       b'04672758AA',
+      b'68226356AI',
     ],
     (Ecu.eps, 0x75a, None): [
+      b'68288309AC',
       b'68288309AD',
       b'68525339AA',
     ],
     (Ecu.engine, 0x7e0, None): [
+      b'68277480AV ',
+      b'68277480AX ',
+      b'68277480AZ ',
       b'68366580AI ',
       b'68366580AK ',
       b'68366580AM ',
     ],
     (Ecu.hybrid, 0x7e2, None): [
+      b'05190175BF',
+      b'05190175BH',
       b'05190226AI',
       b'05190226AK',
       b'05190226AM',
@@ -230,6 +216,7 @@ FW_VERSIONS = {
       b'68540436AD',
       b'68598670AB',
       b'68598670AC',
+      b'68645752AA',
     ],
     (Ecu.eps, 0x75a, None): [
       b'68416741AA',
@@ -242,6 +229,7 @@ FW_VERSIONS = {
       b'68416680AE ',
       b'68416680AF ',
       b'68416680AG ',
+      b'68444228AC ',
       b'68444228AD ',
       b'68444228AE ',
       b'68444228AF ',
@@ -251,6 +239,7 @@ FW_VERSIONS = {
       b'68526772AD ',
       b'68526772AH ',
       b'68599493AC ',
+      b'68657433AA ',
     ],
     (Ecu.hybrid, 0x7e2, None): [
       b'05185116AF',
@@ -265,6 +254,7 @@ FW_VERSIONS = {
       b'68540977AH',
       b'68540977AK',
       b'68597647AE',
+      b'68632416AB',
     ],
   },
   CAR.JEEP_GRAND_CHEROKEE: {
@@ -288,6 +278,7 @@ FW_VERSIONS = {
     (Ecu.abs, 0x747, None): [
       b'68252642AG',
       b'68306178AD',
+      b'68336275AB',
       b'68336276AB',
     ],
     (Ecu.fwdRadar, 0x753, None): [
@@ -309,6 +300,7 @@ FW_VERSIONS = {
       b'68284456AI ',
       b'68284477AF ',
       b'68325564AH ',
+      b'68325564AI ',
       b'68325565AH ',
       b'68325565AI ',
       b'68325618AD ',
@@ -373,6 +365,7 @@ FW_VERSIONS = {
       b'68449435AE ',
       b'68496223AA ',
       b'68504959AD ',
+      b'68504959AE ',
       b'68504960AD ',
       b'68504993AC ',
     ],
@@ -408,6 +401,7 @@ FW_VERSIONS = {
       b'68453483AD',
       b'68453487AD',
       b'68453491AC',
+      b'68453491AD',
       b'68453499AD',
       b'68453503AC',
       b'68453503AD',
@@ -430,6 +424,7 @@ FW_VERSIONS = {
       b'68527381AE',
       b'68527382AE',
       b'68527383AD',
+      b'68527383AE',
       b'68527387AE',
       b'68527403AC',
       b'68527403AD',
@@ -533,6 +528,7 @@ FW_VERSIONS = {
       b'05190341AD',
       b'68378695AJ ',
       b'68378696AJ ',
+      b'68378696AK ',
       b'68378701AI ',
       b'68378702AI ',
       b'68378710AL ',
@@ -555,6 +551,7 @@ FW_VERSIONS = {
       b'68467936AC ',
       b'68500630AD',
       b'68500630AE',
+      b'68500631AE',
       b'68502719AC ',
       b'68502722AC ',
       b'68502733AC ',
@@ -601,6 +598,7 @@ FW_VERSIONS = {
       b'68484467AC',
       b'68484471AC',
       b'68502994AD',
+      b'68502996AD',
       b'68520867AE',
       b'68520867AF',
       b'68520870AC',
